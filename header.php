@@ -19,6 +19,7 @@
                 <a href="<?= $base_url ?? '' ?>admin/dashboard.php" class="text-white text-decoration-none">Správa</a>
             <?php endif; ?>
             <?php if (is_logged_in()): ?>
+                <a href="<?= $base_url ?? '' ?>my_orders.php" class="text-white text-decoration-none">Moje objednávky</a>
                 <a href="<?= $base_url ?? '' ?>cart.php" class="btn btn-sm btn-outline-light">
                     <?php $cart_count = count(get_cart_items()); ?>
                     Košík (<?= $cart_count ?>)

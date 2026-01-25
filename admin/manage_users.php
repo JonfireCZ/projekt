@@ -69,7 +69,6 @@ require_once __DIR__ . '/../header.php';
                                 <?php if ($user['id'] != $_SESSION['user_id']): ?>
                                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $user['id'] ?>">Smazat</button>
                                 <?php else: ?>
-                                    <span class="text-muted text-sm">(Jste Vy)</span>
                                     <span class="text-muted text-sm">(Vy)</span>
                                 <?php endif; ?>
                             </td>

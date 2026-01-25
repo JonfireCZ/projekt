@@ -141,7 +141,7 @@ if (is_logged_in()) {
             <div>
                 <a href="mainpage.php" class="btn btn-outline-secondary">Pokračovat v nákupu</a>
                 <?php if (is_logged_in()): ?>
-                    <a href="#" class="btn btn-primary">Dokončit objednávku</a>
+                    <a href="checkout.php" class="btn btn-primary">Dokončit objednávku</a>
                 <?php else: ?>
                     <a href="login.php" class="btn btn-primary">Přihlásit a dokončit objednávku</a>
                 <?php endif; ?>

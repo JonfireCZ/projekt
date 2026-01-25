@@ -9,6 +9,9 @@ if (isset($_SESSION['user_id'])) {
 
 $error = '';
 $info = '';
+$field_errors = [];
+$email_value = '';
+
 if (isset($_GET['registered'])) {
     $info = 'Registrace proběhla úspěšně. Přihlaste se.';
 }
@@ -22,28 +25,33 @@ if (isset($_GET['logout'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
+    $email_value = $email;
 
-    if ($email === '' || $password === '') {
-        $error = 'Vyplňte email i heslo.';
-    } else {
-        if (strpos($email, '@') === false) {
-            $error = 'Email musí obsahovat "@".';
+    if ($email === '') {
+        $field_errors['email'] = 'Vyplňte email.';
+    } elseif (strpos($email, '@') === false) {
+        $field_errors['email'] = 'Email musí obsahovat "@".';
+    }
+    
+    if ($password === '') {
+        $field_errors['password'] = 'Vyplňte heslo.';
+    }
+
+    if (empty($field_errors)) {
+        $stmt = $pdo->prepare("SELECT id, username, email, password, role FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+
+        if (!$user) {
+            $field_errors['email'] = 'Email nebyl registrován.';
+        } elseif (!password_verify($password, $user['password'])) {
+            $field_errors['password'] = 'Zadané heslo bylo chybné.';
         } else {
-            $stmt = $pdo->prepare("SELECT id, username, email, password, role FROM users WHERE email = ?");
-            $stmt->execute([$email]);
-            $user = $stmt->fetch();
-
-            if (!$user) {
-              $error = 'Email nebyl registrován.';
-            } elseif (!password_verify($password, $user['password'])) {
-              $error = 'Zadané heslo bylo chybné.';
-            } else {
-              $_SESSION['user_id'] = $user['id'];
-              $_SESSION['username'] = $user['username'];
-              $_SESSION['role'] = $user['role'];
-              header('Location: mainpage.php');
-              exit;
-            }
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['role'] = $user['role'];
+            header('Location: mainpage.php');
+            exit;
         }
     }
 }
@@ -77,19 +85,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="alert alert-success alert-dismissible fade show"><?= htmlspecialchars($info) ?><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
       <?php endif; ?>
 
-      <?php if ($error): ?>
-        <div class="alert alert-danger alert-dismissible fade show"><?= htmlspecialchars($error) ?><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
-      <?php endif; ?>
-
       <form method="post" autocomplete="off">
         <div class="mb-3">
           <label class="form-label">Email</label>
-          <input type="text" name="email" class="form-control" required>
+          <input type="text" name="email" class="form-control <?= isset($field_errors['email']) ? 'is-invalid' : '' ?>" value="<?= htmlspecialchars($email_value) ?>" required>
+          <?php if (isset($field_errors['email'])): ?>
+            <div class="invalid-feedback d-block"><?= htmlspecialchars($field_errors['email']) ?></div>
+          <?php endif; ?>
         </div>
 
         <div class="mb-3">
           <label class="form-label">Heslo</label>
-          <input type="password" name="password" class="form-control" required>
+          <input type="password" name="password" class="form-control <?= isset($field_errors['password']) ? 'is-invalid' : '' ?>" required>
+          <?php if (isset($field_errors['password'])): ?>
+            <div class="invalid-feedback d-block"><?= htmlspecialchars($field_errors['password']) ?></div>
+          <?php endif; ?>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3 gap-2">
