@@ -30,14 +30,6 @@ require_once __DIR__ . '/header.php';
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-9 col-md-8">
-                    <div class="card shadow-sm border-0">
-                        <div class="card-body py-3">
-                            <h2>Vítejte v našem e-shopu!</h2>
-                            <p class="text-muted">Níže si prohlédněte naši nabídku. Vybíráme pro vás náhodně vybrané produkty.</p>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="row">
