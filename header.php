@@ -13,8 +13,8 @@
     <div class="container d-flex justify-content-between align-items-center">
         <h1 class="h3 mb-0">LockerRoom</h1>
         <nav class="d-flex gap-3 align-items-center">
-            <a href="<?= $base_url ?? '' ?>mainpage.php" class="text-white text-decoration-none">Hlavní stránka</a>
-            <a href="#" class="text-white text-decoration-none">Fórum</a>
+            <a href="<?= $base_url ?? '' ?>mainpage.php" class="text-white text-decoration-none">E-shop</a>
+            <a href="<?= $base_url ?? '' ?>forum.php" class="text-white text-decoration-none">Fórum</a>
             <?php if (is_admin()): ?>
                 <a href="<?= $base_url ?? '' ?>admin/dashboard.php" class="text-white text-decoration-none">Správa</a>
             <?php endif; ?>
