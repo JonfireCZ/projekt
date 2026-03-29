@@ -4,6 +4,15 @@ require_once __DIR__ . '/functions.php';
 
 $category_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
+$price_min = isset($_GET['price_min']) && is_numeric($_GET['price_min']) ? max(0, (float)$_GET['price_min']) : '';
+$price_max = isset($_GET['price_max']) && is_numeric($_GET['price_max']) ? max(0, (float)$_GET['price_max']) : '';
+
+if ($price_min !== '' && $price_max !== '' && $price_max < $price_min) {
+    $price_max = $price_min;
+}
+
+$in_stock = isset($_GET['in_stock']) ? true : false;
+
 $stmt = $pdo->prepare("SELECT * FROM categories WHERE id = ?");
 $stmt->execute([$category_id]);
 $category = $stmt->fetch();
@@ -13,8 +22,27 @@ if (!$category) {
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT * FROM products WHERE category_id = ? ORDER BY created_at DESC");
-$stmt->execute([$category_id]);
+$where_clauses = ["p.category_id = ?"];
+$params = [$category_id];
+
+if ($price_min !== '') {
+    $where_clauses[] = "p.price >= ?";
+    $params[] = $price_min;
+}
+
+if ($price_max !== '') {
+    $where_clauses[] = "p.price <= ?";
+    $params[] = $price_max;
+}
+
+if ($in_stock) {
+    $where_clauses[] = "p.stock > 0";
+}
+
+$where_sql = 'WHERE ' . implode(' AND ', $where_clauses);
+
+$stmt = $pdo->prepare("SELECT * FROM products p $where_sql ORDER BY created_at DESC");
+$stmt->execute($params);
 $products = $stmt->fetchAll();
 
 $stmt = $pdo->query("SELECT * FROM categories ORDER BY name");
@@ -23,6 +51,7 @@ $categories = $stmt->fetchAll();
 $page_title = escape($category['name']) . ' — LockerRoom';
 $css_path = 'style.css';
 $base_url = '';
+$show_search = true;
 
 require_once __DIR__ . '/header.php';
 ?>
@@ -40,6 +69,29 @@ require_once __DIR__ . '/header.php';
                                 </a>
                             <?php endforeach; ?>
                         </div>
+
+                        <hr>
+
+                        <h6 class="mt-3">Filtry</h6>
+                        <form method="get" action="category.php">
+                            <input type="hidden" name="id" value="<?= $category_id ?>">
+                            <div class="mb-3">
+                                <label class="form-label">Cena</label>
+                                <div class="d-flex gap-2">
+                                    <input type="number" name="price_min" id="minInput" class="form-control form-control-sm" min="0" max="99999" step="0.1" value="<?= $price_min ?: 0 ?>">
+                                    <span class="align-self-center">-</span>
+                                    <input type="number" name="price_max" id="maxInput" class="form-control form-control-sm" min="0" max="99999" step="0.1" value="<?= $price_max ?: 99999 ?>">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" name="in_stock" id="in_stock" class="form-check-input" value="1" <?= $in_stock ? 'checked' : '' ?>>
+                                    <label for="in_stock" class="form-check-label">Pouze skladem</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm w-100 mb-2">Filtrovat</button>
+                            <a href="category.php?id=<?= $category_id ?>" class="btn btn-outline-secondary btn-sm w-100">Vymazat filtry</a>
+                        </form>
                     </div>
                 </div>
             </aside>
@@ -80,7 +132,7 @@ require_once __DIR__ . '/header.php';
                                     <div class="card-body">
                                         <h5 class="card-title"><?= escape($product['name']) ?></h5>
                                         <p class="card-text"><?= escape(substr($product['description'], 0, 100)) ?>...</p>
-                                        <h6 class="text-primary"><?= number_format($product['price'], 2, ',', ' ') ?> Kč</h6>
+                                        <h6 class="text-primary"><?= number_format($product['price'], 1, ',', ' ') ?> Kč</h6>
                                     </div>
                                 </div>
                             </a>
@@ -91,5 +143,9 @@ require_once __DIR__ . '/header.php';
             </section>
         </div>
     </div>
+
+    <script>
+        // No sliders, no need for sync
+    </script>
 
 <?php require_once __DIR__ . '/footer.php'; ?>

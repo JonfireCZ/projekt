@@ -5,6 +5,7 @@ require_once __DIR__ . '/functions.php';
 $page_title = 'Fórum - LockerRoom';
 $css_path = 'style.css';
 $base_url = '';
+$show_search = false;
 
 $category_filter = $_GET['category'] ?? 'all';
 
@@ -59,8 +60,6 @@ require_once __DIR__ . '/header.php';
                 </div>
                 <?php if (is_logged_in()): ?>
                     <a href="forum_new_post.php" class="btn btn-primary">+ Přidat příspěvek</a>
-                <?php else: ?>
-                    <a href="login.php" class="btn btn-outline-primary">Přihlásit se</a>
                 <?php endif; ?>
             </div>
         </div>

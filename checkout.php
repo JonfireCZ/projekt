@@ -11,7 +11,6 @@ $page_title = 'Dokončení objednávky';
 $css_path = 'style.css';
 $base_url = '';
 
-// Načtení položek z košíku
 $items = [];
 $total = 0.0;
 
@@ -25,7 +24,6 @@ if (empty($rows)) {
 }
 
 foreach ($rows as $r) {
-    // Kontrola dostupnosti
     if ($r['quantity'] > $r['stock']) {
         header('Location: cart.php?error=' . urlencode('Produkt "' . $r['name'] . '" není dostupný v požadovaném množství'));
         exit;
@@ -42,7 +40,6 @@ foreach ($rows as $r) {
     $total += $subtotal;
 }
 
-// Načtení informací o uživateli
 $stmt = $pdo->prepare("SELECT first_name, last_name, email FROM users WHERE id = ?");
 $stmt->execute([$_SESSION['user_id']]);
 $user = $stmt->fetch();

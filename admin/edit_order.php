@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../database_connect.php';
 require_once __DIR__ . '/../functions.php';
 
-// Kontrola přihlášení a oprávnění
 if (!is_logged_in() || !is_admin()) {
     header('Location: ../login.php?message=' . urlencode('Nemáte oprávnění k přístupu'));
     exit;
@@ -10,7 +9,6 @@ if (!is_logged_in() || !is_admin()) {
 
 $order_id = $_GET['id'] ?? 0;
 
-// Zpracování formuláře
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     
@@ -29,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("UPDATE order_items SET quantity = ?, price = ? WHERE id = ? AND order_id = ?");
         $stmt->execute([$quantity, $price, $item_id, $order_id]);
         
-        // Přepočítat celkovou cenu objednávky
         $stmt = $pdo->prepare("SELECT SUM(quantity * price) as total FROM order_items WHERE order_id = ?");
         $stmt->execute([$order_id]);
         $new_total = $stmt->fetch()['total'];
@@ -46,7 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("DELETE FROM order_items WHERE id = ? AND order_id = ?");
         $stmt->execute([$item_id, $order_id]);
         
-        // Přepočítat celkovou cenu objednávky
         $stmt = $pdo->prepare("SELECT SUM(quantity * price) as total FROM order_items WHERE order_id = ?");
         $stmt->execute([$order_id]);
         $result = $stmt->fetch();
@@ -61,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     elseif ($action === 'cancel_order') {
         $pdo->beginTransaction();
         try {
-            // Vrátit produkty zpět na sklad
             $stmt = $pdo->prepare("SELECT product_id, quantity FROM order_items WHERE order_id = ?");
             $stmt->execute([$order_id]);
             $items = $stmt->fetchAll();
@@ -73,7 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             
-            // Změnit stav objednávky na zrušeno
             $stmt = $pdo->prepare("UPDATE orders SET status = 'cancelled' WHERE id = ?");
             $stmt->execute([$order_id]);
             
@@ -89,7 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Načtení objednávky
 $stmt = $pdo->prepare("SELECT o.*, u.username, u.email, u.first_name, u.last_name 
                        FROM orders o 
                        LEFT JOIN users u ON o.user_id = u.id 
@@ -102,12 +95,10 @@ if (!$order) {
     exit;
 }
 
-// Načtení položek objednávky
 $stmt = $pdo->prepare("SELECT * FROM order_items WHERE order_id = ?");
 $stmt->execute([$order_id]);
 $items = $stmt->fetchAll();
 
-// Dekódování dodací adresy
 $address = json_decode($order['shipping_address'], true);
 
 $page_title = 'Úprava objednávky #' . $order_id;
@@ -116,7 +107,6 @@ $base_url = '../';
 
 require_once __DIR__ . '/../header.php';
 
-// Funkce pro překlad stavů
 function translate_status($status) {
     $translations = [
         'pending' => 'Čeká na zpracování',
@@ -141,7 +131,6 @@ function translate_status($status) {
     
     <div class="row">
         <div class="col-md-8">
-            <!-- Informace o objednávce -->
             <div class="card mb-4">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Informace o objednávce</h5>
@@ -168,7 +157,6 @@ function translate_status($status) {
                         </div>
                     <?php endif; ?>
                     
-                    <!-- Změna stavu -->
                     <?php if ($order['status'] === 'delivered'): ?>
                         <div class="alert alert-success mt-3">
                             <strong>✅ Objednávka byla doručena</strong><br>

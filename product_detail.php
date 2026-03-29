@@ -116,6 +116,7 @@ if (is_logged_in()) {
 $page_title = escape($product['name']) . ' — LockerRoom';
 $css_path = 'style.css';
 $base_url = '';
+$show_search = true;
 
 require_once __DIR__ . '/header.php';
 ?>

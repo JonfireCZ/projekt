@@ -31,10 +31,8 @@ function redirect(string $url): void {
     exit;
 }
 
-// CART helpers
 function add_to_cart(int $product_id, int $quantity = 1): void {
     global $pdo;
-    // require login for adding to cart
     if (!is_logged_in()) return;
     if ($quantity < 1) $quantity = 1;
     $stmt = $pdo->prepare("SELECT stock FROM products WHERE id = ?");
@@ -80,7 +78,6 @@ function set_cart_quantity(int $product_id, int $quantity): void {
             $stmt->execute([$user_id, $product_id, $quantity]);
         }
     } else {
-        // do nothing for guests (cart disabled for guests)
         return;
     }
 }
@@ -111,7 +108,6 @@ function get_cart_items(): array {
             ];
         }
     } else {
-        // guests have no cart
         return [];
     }
     return $items;
