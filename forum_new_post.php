@@ -40,7 +40,7 @@ require_once __DIR__ . '/header.php';
         <div class="col-lg-8">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-primary text-white py-3">
-                    <h2 class="h4 mb-0">✏️ Vytvořit nový příspěvek</h2>
+                    <h2 class="h4 mb-0">Vytvořit nový příspěvek</h2>
                 </div>
                 <div class="card-body p-4">
                     <?php if ($error): ?>

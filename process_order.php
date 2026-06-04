@@ -69,9 +69,19 @@ try {
         $total += $item['quantity'] * $item['price'];
     }
     
+    // determine if orders table has 'is_public' column
+    $col = $pdo->query("SHOW COLUMNS FROM orders LIKE 'is_public'")->fetch();
+    $is_public = isset($_POST['is_public']) ? 1 : 0;
+
     // Vytvoření objednávky
-    $stmt = $pdo->prepare("INSERT INTO orders (user_id, total_price, status, shipping_address) VALUES (?, ?, 'pending', ?)");
-    $result = $stmt->execute([$_SESSION['user_id'], $total, $shipping_address]);
+    if ($col) {
+        $stmt = $pdo->prepare("INSERT INTO orders (user_id, total_price, status, shipping_address, is_public) VALUES (?, ?, 'pending', ?, ?)");
+        $result = $stmt->execute([$_SESSION['user_id'], $total, $shipping_address, $is_public]);
+    } else {
+        // fallback for older schema
+        $stmt = $pdo->prepare("INSERT INTO orders (user_id, total_price, status, shipping_address) VALUES (?, ?, 'pending', ?)");
+        $result = $stmt->execute([$_SESSION['user_id'], $total, $shipping_address]);
+    }
     
     if (!$result) {
         throw new Exception("Nepodařilo se vytvořit objednávku");

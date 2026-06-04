@@ -130,7 +130,7 @@ require_once __DIR__ . '/header.php';
                         <?php endif; ?>
                         <h5 class="card-title">Kategorie</h5>
                         <div class="d-flex flex-column gap-2">
-                            <a href="mainpage.php" class="btn btn-outline-secondary btn-sm">← Všechny produkty</a>
+                            <a href="mainpage.php" class="btn btn-outline-secondary btn-sm">Všechny produkty</a>
                             <?php foreach ($categories as $cat): ?>
                                 <a href="category.php?id=<?= $cat['id'] ?>" class="btn <?= ($cat['id'] == $product['category_id']) ? 'btn-primary' : 'btn-outline-primary' ?> btn-sm">
                                     <?= escape($cat['name']) ?>
@@ -142,7 +142,7 @@ require_once __DIR__ . '/header.php';
             </aside>
 
             <section class="col-md-9">
-                <a href="mainpage.php" class="btn btn-outline-secondary btn-sm mb-3">← Zpět</a>
+                <a href="mainpage.php" class="btn btn-outline-secondary btn-sm mb-3">Zpět</a>
 
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
@@ -277,9 +277,6 @@ require_once __DIR__ . '/header.php';
                                                 <?php endif; ?>
                                             </div>
                                         </div>
-                                        <?php if ($review['title']): ?>
-                                            <h5 class="fw-bold mb-2" style="margin-left: 60px; color: #0f3460;"><?= escape($review['title']) ?></h5>
-                                        <?php endif; ?>
                                         <div style="line-height: 1.7; color: #333; margin-left: 60px;"><?= nl2br(escape($review['content'])) ?></div>
                                     </div>
                                 <?php endforeach; ?>
@@ -316,10 +313,7 @@ require_once __DIR__ . '/header.php';
                                         <?php endfor; ?>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Nadpis <span class="text-muted fw-normal">(nepovinné)</span></label>
-                                    <input type="text" name="title" class="form-control" placeholder="Shrňte svou zkušenost...">
-                                </div>
+                                <!-- title removed: only rating and content are collected/displayed -->
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Recenze</label>
                                     <textarea name="content" class="form-control" rows="4" placeholder="Popište svou zkušenost s produktem..." required style="resize: vertical;"></textarea>

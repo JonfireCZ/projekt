@@ -105,7 +105,7 @@ require_once __DIR__ . '/header.php';
 ?>
 
 <div class="container my-4">
-    <a href="forum.php" class="btn btn-outline-secondary btn-sm mb-3">← Zpět na fórum</a>
+    <a href="forum.php" class="btn btn-outline-secondary btn-sm mb-3">Zpět na fórum</a>
 
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-header bg-primary text-white py-3">
@@ -116,18 +116,18 @@ require_once __DIR__ . '/header.php';
                     <?php endif; ?>
                     <h1 class="h3 mb-2"><?= escape($post['title']) ?></h1>
                     <div class="d-flex align-items-center gap-3 text-white-50">
-                        <span>👤 <strong><?= escape($post['author']) ?></strong>
+                        <span>Autor: <strong><?= escape($post['author']) ?></strong>
                             <?php if ($post['author_role'] === 'admin'): ?>
                                 <span class="badge bg-danger ms-1">Admin</span>
                             <?php endif; ?>
                         </span>
-                        <span>🕒 <?= date('d.m.Y H:i', strtotime($post['created_at'])) ?></span>
+                        <span>Vytvořeno: <?= date('d.m.Y H:i', strtotime($post['created_at'])) ?></span>
                     </div>
                 </div>
                 <?php if (is_admin()): ?>
                     <form method="post" class="d-inline" onsubmit="return confirm('Opravdu chcete smazat tento příspěvek?');">
                         <input type="hidden" name="action" value="delete_post">
-                        <button type="submit" class="btn btn-sm btn-danger">🗑️ Smazat</button>
+                        <button type="submit" class="btn btn-sm btn-danger">Smazat</button>
                     </form>
                 <?php endif; ?>
             </div>
@@ -142,10 +142,10 @@ require_once __DIR__ . '/header.php';
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div class="d-flex gap-4">
                     <div class="text-muted">
-                        👁️ <strong><?= $post['views'] ?></strong>
+                        Zobrazení <strong><?= $post['views'] ?></strong>
                     </div>
                     <div class="text-muted">
-                        💬 <strong><?= $post['comments_count'] ?></strong>
+                        Komentáře <strong><?= $post['comments_count'] ?></strong>
                     </div>
                 </div>
                 <div>
@@ -153,12 +153,12 @@ require_once __DIR__ . '/header.php';
                         <form method="post" class="d-inline">
                             <input type="hidden" name="action" value="like">
                             <button type="submit" class="btn btn-sm <?= $user_liked ? 'btn-danger' : 'btn-outline-danger' ?>">
-                                ❤️ <strong><?= $post['likes_count'] ?></strong>
+                                Lajky <strong><?= $post['likes_count'] ?></strong>
                             </button>
                         </form>
                     <?php else: ?>
                         <span class="badge bg-light text-danger">
-                            ❤️ <?= $post['likes_count'] ?>
+                            Lajky <?= $post['likes_count'] ?>
                         </span>
                     <?php endif; ?>
                 </div>
@@ -172,8 +172,8 @@ require_once __DIR__ . '/header.php';
 
     <div id="comments" class="mb-4">
         <div class="card shadow-sm border-0 mb-3">
-            <div class="card-body p-4">
-                <h3 class="h5 mb-3">💬 Komentáře <span class="badge bg-primary"><?= count($comments) ?></span></h3>
+                <div class="card-body p-4">
+                    <h3 class="h5 mb-3">Komentáře <span class="badge bg-primary"><?= count($comments) ?></span></h3>
         
                 <?php if (empty($comments)): ?>
                     <div class="text-center py-4 text-muted">
@@ -189,14 +189,14 @@ require_once __DIR__ . '/header.php';
                                         <span class="badge bg-danger">Admin</span>
                                     <?php endif; ?>
                                     <small class="text-muted d-block">
-                                        🕒 <?= date('d.m.Y H:i', strtotime($comment['created_at'])) ?>
+                                        Přidáno: <?= date('d.m.Y H:i', strtotime($comment['created_at'])) ?>
                                     </small>
                                 </div>
                                 <?php if (is_logged_in() && (is_admin() || $comment['user_id'] == $_SESSION['user_id'])): ?>
                                     <form method="post" class="d-inline" onsubmit="return confirm('Opravdu chcete smazat tento komentář?');">
                                         <input type="hidden" name="action" value="delete_comment">
                                         <input type="hidden" name="comment_id" value="<?= $comment['id'] ?>">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">🗑️</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Smazat</button>
                                     </form>
                                 <?php endif; ?>
                             </div>
@@ -210,8 +210,8 @@ require_once __DIR__ . '/header.php';
 
     <?php if (is_logged_in()): ?>
         <div class="card shadow-sm border-0">
-            <div class="card-header bg-primary text-white py-3">
-                <h4 class="h6 mb-0">✏️ Napište komentář</h4>
+                <div class="card-header bg-primary text-white py-3">
+                <h4 class="h6 mb-0">Napište komentář</h4>
             </div>
             <div class="card-body p-4">
                 <form method="post">
@@ -225,8 +225,8 @@ require_once __DIR__ . '/header.php';
         </div>
     <?php else: ?>
         <div class="card shadow-sm border-0">
-            <div class="card-body text-center py-4">
-                <h5>🔒 Přidejte se k diskuzi</h5>
+                <div class="card-body text-center py-4">
+                <h5>Přidejte se k diskuzi</h5>
                 <p class="text-muted">Pro přidání komentáře se musíte přihlásit</p>
                 <a href="login.php" class="btn btn-primary me-2">Přihlásit se</a>
                 <a href="register.php" class="btn btn-outline-secondary">Registrovat se</a>

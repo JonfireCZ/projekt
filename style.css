@@ -22,20 +22,22 @@ footer {
 }
 
 .card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: box-shadow 0.18s ease;
 }
 
+/* Remove translate hover movement; keep a very subtle shadow on hover */
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+    /* no visual shift on hover */
+    transform: none;
+    box-shadow: none !important;
 }
 
 .btn {
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .btn:hover {
-    transform: translateY(-2px);
+    transform: none;
 }
 
 /* Zvýraznění chybných polí */
@@ -59,3 +61,259 @@ footer {
     font-size: 0.875em;
     color: #dc3545;
 }
+
+/* Professional theme additions */
+:root{
+    --brand: #0f3460;
+    --brand-600: #0b2a4f;
+    --muted: #6c757d;
+    --bg-soft: #f7f9fc;
+    --card-bg: #ffffff;
+    --radius: 10px;
+    --max-width: 1100px;
+}
+
+body{
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    color: #222;
+    background: var(--bg-soft);
+    -webkit-font-smoothing:antialiased;
+}
+
+.container{ max-width: var(--max-width); width:100%; padding-left:16px; padding-right:16px }
+
+header .container{
+    align-items: center;
+}
+
+header h1{ font-weight:600; margin-right:12px; letter-spacing:0.2px }
+
+/* header search input refinement */
+.input-group .form-control{
+    border-radius: 24px 0 0 24px !important;
+    border-right: none !important;
+    padding: 10px 14px;
+}
+.input-group .btn{
+    border-radius: 0 24px 24px 0 !important;
+}
+
+/* navigation links */
+nav a{text-decoration:none; color: #fff; opacity:0.95}
+.nav a:hover { opacity: 1; /* keep link appearance stable on hover */ }
+
+/* cards */
+.card{ border-radius: var(--radius); background: var(--card-bg); }
+.card .card-body{ padding:18px }
+
+/* list-group tweaks for posts/users */
+.list-group-item{ border:1px solid #edf1f5; border-radius:8px; margin-bottom:8px }
+.list-group-item:hover{ background:inherit; box-shadow:none }
+
+/* profile tabs */
+.nav-tabs .nav-link{ border:0; color:var(--brand-600); padding:10px 14px }
+.nav-tabs .nav-link.active{ background: linear-gradient(90deg,var(--brand),var(--brand-600)); color:#fff; border-radius:8px }
+
+/* buttons */
+.btn-primary{ background:var(--brand); border-color:var(--brand) }
+.btn-primary:hover{ background:var(--brand); border-color:var(--brand) }
+
+/* make cards and lists breathe */
+.mb-3, .my-4{ margin-bottom:1.25rem !important }
+
+/* forum post card title */
+.card-title{ font-size:1.05rem; font-weight:600 }
+.text-muted.small{ color:var(--muted) }
+
+/* responsive tweaks */
+@media (max-width:768px){
+    .container{ padding-left:12px; padding-right:12px }
+    header .container{ flex-direction:column; gap:10px }
+}
+
+/* Images and media should scale to container */
+img, .card-img-top, .product-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* make tables scroll on small screens */
+.table-responsive{ overflow-x:auto; -webkit-overflow-scrolling:touch }
+
+/* search form should be full width on small screens */
+.header-search-wrap{ display:flex; align-items:center }
+.header-search-wrap form{ width:100%; }
+
+/* reduce paddings on smaller devices to save space */
+@media (max-width:992px){
+    .card .card-body{ padding:14px }
+    .nav-tabs .nav-link{ padding:8px 10px }
+}
+
+@media (max-width:576px){
+    :root{ --max-width:100% }
+    header .container{ padding-top:10px; padding-bottom:10px }
+    .card .card-body{ padding:12px }
+    .input-group .form-control{ max-width:100%; width:100%; }
+    .input-group{ width:100% }
+    .list-group-item{ margin-bottom:10px }
+}
+
+/* Mobile nav collapse styles */
+#siteNav a{ color:#fff; text-decoration:none }
+@media (max-width:767px){
+    /* overlay dropdown from top-of-content (under header) */
+    #siteNav.collapse.show{ position:fixed; left:0; right:0; top:var(--header-height,64px); z-index:1050; background: linear-gradient(180deg, rgba(15,52,96,0.98), rgba(11,42,79,0.95)); padding:12px; box-shadow:0 6px 18px rgba(0,0,0,0.12) }
+    #siteNav nav{ background:transparent; padding:4px 8px }
+    #siteNav a{ display:block; padding:10px 8px }
+    #siteNav .btn{ display:block; width:100%; text-align:left }
+}
+
+/* mobile search styles */
+.mobile-search{ position:relative; width:100%; margin-top:6px }
+.mobile-search .form-control{ width:100%; }
+.mobile-search form{ gap:8px }
+
+/* hide desktop search input on small screens (we use mobileSearch) */
+@media (max-width:767px){
+    header .input-group{ display:none !important }
+}
+
+/* subtle shadow for main area */
+main{ padding-top:18px; padding-bottom:36px }
+
+/* footer */
+footer{ background:#fff; padding:18px 0; color:var(--muted) }
+
+/* utility */
+.small-muted{ color:var(--muted); font-size:0.9rem }
+
+/* Product / store specific
+   Improve product card layout, image handling and price display */
+.card-img-top{ border-top-left-radius: var(--radius); border-top-right-radius: var(--radius); }
+.product-price{ font-size:1.05rem; font-weight:700; color:var(--brand-600) }
+.product-description{ color:var(--muted); font-size:0.95rem }
+
+/* Header background + nav polish */
+header{ background: linear-gradient(180deg, rgba(15,52,96,0.98), rgba(11,42,79,0.95)); }
+header .container{ padding-top:14px; padding-bottom:14px }
+
+/* ensure header height variable for overlay positioning */
+header{ --header-height: 64px }
+
+/* make desktop search an absolute overlay to avoid shifting header layout */
+.header-search-wrap{ position: relative }
+@media (min-width:768px){
+    #desktopSearch.collapse{ position:absolute; top:calc(100% + 8px); left:0; z-index:1060; width:340px; }
+    #desktopSearch .input-group{ width:100% }
+}
+
+/* Prevent header overflow on wide screens by allowing wrap and limiting search width */
+header .container{ flex-wrap: wrap; gap:8px }
+.header-search-wrap{ max-width:420px; flex: 0 1 420px }
+header nav{ flex-wrap: wrap }
+
+/* Cart badge */
+.btn-outline-light{ position:relative }
+.btn-outline-light::after{ content: attr(data-count); position:absolute; top:-8px; right:-8px; background:#ff6b6b; color:#fff; font-size:11px; padding:2px 6px; border-radius:999px; box-shadow:0 4px 10px rgba(0,0,0,0.12) }
+
+/* Forms */
+.form-label{ font-weight:600 }
+.form-control{ border-radius:8px }
+
+/* Tables (admin) */
+table.table{ border-collapse:separate; border-spacing:0 8px }
+table.table tr{ background:#fff }
+
+/* subtle divider */
+.divider{ height:1px; background:#eef3f8; margin:18px 0; border-radius:2px }
+
+/* utility helpers */
+.text-brand{ color:var(--brand) }
+
+/* small screens: make header elements stack nicely */
+@media (max-width:480px){
+    .input-group .form-control{ max-width:180px }
+}
+
+/* ----- New layout improvements ----- */
+/* Create a softer, centered content surface and clearer spacing between sections */
+main .container {
+    padding-top: 28px;
+    padding-bottom: 40px;
+}
+
+/* Make the primary content column feel like a distinct surface */
+.col-md-9 > .card, .col-lg-8 > .card, .card.page-surface {
+    background: #ffffff;
+    border-radius: calc(var(--radius) + 2px);
+    box-shadow: 0 12px 30px rgba(11,42,79,0.06);
+    border: 0;
+}
+
+/* Add breathing room between stacked major cards */
+.card + .card, .card + .divider, .divider + .card { margin-top: 20px; }
+
+/* Make sections more distinct with subtle headings */
+.section-heading { display:flex; align-items:center; gap:12px; margin-bottom:14px }
+.section-heading h3 { margin:0; font-size:1.15rem; color:var(--brand-600); }
+.section-heading .count-badge { background:var(--brand); color:#fff; padding:6px 12px; border-radius:999px; font-weight:600 }
+
+/* Improve readability of long text blocks */
+p, .card-text, .list-unstyled li { line-height:1.65; color:#333 }
+
+/* Responsive two-column layout for wider screens where appropriate */
+@media (min-width:992px){
+    .main-grid { display:grid; grid-template-columns: 1fr 320px; gap:28px; align-items:start }
+}
+
+/* On small screens stack nicely and increase gaps */
+@media (max-width:767px){
+    main .container { padding-left:12px; padding-right:12px }
+    .card { border-radius: 12px }
+    .section-heading h3 { font-size:1.05rem }
+}
+
+/* Tidy up forms and inputs for consistent radii */
+.form-control, .btn, .input-group .form-control { border-radius: 10px }
+
+/* subtle page footer separation */
+footer { border-top: 1px solid rgba(14,30,45,0.04); }
+
+/* end layout improvements */
+
+/* ----- Force-disable movement/animation site-wide (remove 'popping') ----- */
+/* Disable all transitions and transforms globally */
+* {
+    transition: none !important;
+    transform: none !important;
+}
+
+/* Disable hover/focus/active visual changes on all interactive elements */
+button:hover, 
+a:hover,
+input:hover,
+select:hover,
+textarea:hover,
+.card:hover,
+.btn:hover,
+.list-group-item:hover {
+    transform: none !important;
+    box-shadow: inherit !important;
+    background: inherit !important;
+}
+
+button:focus,
+a:focus,
+input:focus,
+select:focus,
+textarea:focus,
+.card:focus,
+.btn:focus {
+    transform: none !important;
+    box-shadow: none !important;
+    outline: none;
+}
+
+/* ----- end disable movement ----- */

@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3 gap-2">
-          <a href="forgot_pass.php" class="text-decoration-none">Zapomenuté heslo?</a>
+          <div></div>
           <button class="btn btn-primary" type="submit">Přihlásit</button>
         </div>
       </form>

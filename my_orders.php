@@ -11,8 +11,7 @@ $page_title = 'Moje objednávky';
 $css_path = 'style.css';
 $base_url = '';
 
-// Načtení objednávek
-$stmt = $pdo->prepare("SELECT id, total_price, status, created_at FROM orders WHERE user_id = ? ORDER BY created_at DESC");
+$stmt = $pdo->prepare("SELECT id, total_price, status, created_at, COALESCE(is_public,0) AS is_public FROM orders WHERE user_id = ? ORDER BY created_at DESC");
 $stmt->execute([$_SESSION['user_id']]);
 $orders = $stmt->fetchAll();
 
@@ -82,33 +81,46 @@ function status_badge_class($status) {
                                 <span class="badge <?= status_badge_class($order['status']) ?>">
                                     <?= translate_status($order['status']) ?>
                                 </span>
+                                <?php if (!empty($order['is_public'])): ?>
+                                    <span class="badge bg-secondary ms-2">Veřejná</span>
+                                <?php else: ?>
+                                    <span class="badge bg-light text-muted ms-2">Soukromá</span>
+                                <?php endif; ?>
                             </div>
                             <div class="col-md-3 text-end">
                                 <strong><?= number_format($order['total_price'], 2, ',', ' ') ?> Kč</strong>
+                                <a href="order_details.php?id=<?= $order['id'] ?>" class="btn btn-sm btn-primary ms-2">Detaily</a>
+                                <button type="button" class="btn btn-sm btn-outline-primary ms-2" data-bs-toggle="collapse" data-bs-target="#orderDetails-<?= $order['id'] ?>" aria-expanded="false" aria-controls="orderDetails-<?= $order['id'] ?>">
+                                    Zobrazit
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h6>Položky objednávky:</h6>
-                                <ul class="list-unstyled">
-                                    <?php foreach ($items as $item): ?>
-                                        <li class="mb-1">
-                                            <?= escape($item['product_name']) ?> 
-                                            <span class="text-muted">(<?= $item['quantity'] ?>× <?= number_format($item['price'], 2, ',', ' ') ?> Kč)</span>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                            <div class="col-md-4">
-                                <h6>Dodací adresa:</h6>
-                                <address>
-                                    <?= escape($address['first_name'] ?? '') ?> <?= escape($address['last_name'] ?? '') ?><br>
-                                    <?= escape($address['street'] ?? '') ?><br>
-                                    <?= escape($address['zip'] ?? '') ?> <?= escape($address['city'] ?? '') ?><br>
-                                    <small class="text-muted">Tel: <?= escape($address['phone'] ?? '') ?></small>
-                                </address>
+                    <div id="orderDetails-<?= $order['id'] ?>" class="collapse">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h6>Položky objednávky:</h6>
+                                    <ul class="list-unstyled">
+                                        <?php foreach ($items as $item): ?>
+                                            <li class="mb-1">
+                                                <?= escape($item['product_name']) ?> 
+                                                <span class="text-muted">(<?= $item['quantity'] ?>× <?= number_format($item['price'], 2, ',', ' ') ?> Kč)</span>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>Dodací adresa:</h6>
+                                    <address>
+                                        <?= escape($address['first_name'] ?? '') ?> <?= escape($address['last_name'] ?? '') ?><br>
+                                        <?= escape($address['street'] ?? '') ?><br>
+                                        <?= escape($address['zip'] ?? '') ?> <?= escape($address['city'] ?? '') ?><br>
+                                        <small class="text-muted">Tel: <?= escape($address['phone'] ?? '') ?></small>
+                                    </address>
+                                    <p class="mb-0"><strong>Stav:</strong> <span class="badge <?= status_badge_class($order['status']) ?>"><?= translate_status($order['status']) ?></span></p>
+                                    <p class="mb-0"><strong>Cena celkem:</strong> <?= number_format($order['total_price'], 2, ',', ' ') ?> Kč</p>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -62,21 +62,15 @@ if ($search || $category_filter || $price_min !== '' || $price_max !== '' || $in
 require_once __DIR__ . '/header.php';
 ?>
     <div class="container my-4">
+        <div class="d-flex d-md-none justify-content-between mb-3">
+            <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">Filtry</button>
+            <a href="mainpage.php" class="btn btn-outline-secondary">Vymazat filtry</a>
+        </div>
         <div class="row">
             <aside class="col-md-3 mb-3">
+                <div id="filtersCollapse" class="collapse d-md-block">
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
-                        <h5 class="card-title">Kategorie</h5>
-                        <div class="d-flex flex-column gap-2">
-                            <?php foreach ($categories as $cat): ?>
-                                <a href="category.php?id=<?= $cat['id'] ?>" class="btn btn-outline-primary btn-sm">
-                                    <?= escape($cat['name']) ?>
-                                </a>
-                            <?php endforeach; ?>
-                        </div>
-
-                        <hr>
-
                         <h6 class="mt-3">Filtry</h6>
                         <form method="get" action="mainpage.php">
                             <div class="mb-3">
@@ -107,6 +101,7 @@ require_once __DIR__ . '/header.php';
                             <input type="hidden" name="search" value="<?= escape($search) ?>">
                         </form>
                     </div>
+                </div>
                 </div>
             </aside>
 
@@ -139,7 +134,7 @@ require_once __DIR__ . '/header.php';
                     <?php foreach ($products as $product): ?>
                     <div class="col-md-4 mb-4">
                         <a href="product_detail.php?id=<?= $product['id'] ?>" class="text-decoration-none text-reset">
-                            <div class="card shadow-sm border-0 h-100 transition-shadow" style="transition: box-shadow 0.3s; cursor: pointer;">
+                            <div class="card shadow-sm border-0 h-100">
                                 <?php if (!empty($product['image_mime'])): ?>
                                     <img src="image.php?id=<?= $product['id'] ?>" alt="<?= escape($product['name']) ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
                                 <?php elseif (!empty($product['image_path']) && file_exists(__DIR__ . '/' . $product['image_path'])): ?>

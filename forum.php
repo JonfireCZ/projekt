@@ -5,47 +5,59 @@ require_once __DIR__ . '/functions.php';
 $page_title = 'Fórum - LockerRoom';
 $css_path = 'style.css';
 $base_url = '';
-$show_search = false;
+$show_search = true;
 
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $category_filter = $_GET['category'] ?? 'all';
 
-if ($category_filter === 'all') {
-    $stmt = $pdo->query("
-        SELECT 
-            fp.id,
-            fp.title,
-            fp.category,
-            fp.views,
-            fp.likes_count,
-            fp.comments_count,
-            fp.created_at,
-            u.username as author
-        FROM forum_posts fp
-        LEFT JOIN users u ON fp.user_id = u.id
-        ORDER BY fp.created_at DESC
-    ");
-} else {
-    $stmt = $pdo->prepare("
-        SELECT 
-            fp.id,
-            fp.title,
-            fp.category,
-            fp.views,
-            fp.likes_count,
-            fp.comments_count,
-            fp.created_at,
-            u.username as author
-        FROM forum_posts fp
-        LEFT JOIN users u ON fp.user_id = u.id
-        WHERE fp.category = ?
-        ORDER BY fp.created_at DESC
-    ");
-    $stmt->execute([$category_filter]);
-}
-$posts = $stmt->fetchAll();
-
+// always load categories for sidebar (prevent undefined variable when searching users)
 $stmt = $pdo->query("SELECT DISTINCT category FROM forum_posts WHERE category IS NOT NULL ORDER BY category");
 $categories = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+if ($search) {
+    $stmt = $pdo->prepare("SELECT id, username, first_name, last_name, email FROM users WHERE username LIKE ? OR first_name LIKE ? OR last_name LIKE ? ORDER BY username");
+    $param = '%' . $search . '%';
+    $stmt->execute([$param, $param, $param]);
+    $users = $stmt->fetchAll();
+} else {
+    if ($category_filter === 'all') {
+        $stmt = $pdo->query("
+            SELECT 
+                fp.id,
+                fp.title,
+                fp.category,
+                fp.views,
+                fp.likes_count,
+                fp.comments_count,
+                fp.created_at,
+                u.username as author
+            FROM forum_posts fp
+            LEFT JOIN users u ON fp.user_id = u.id
+            ORDER BY fp.created_at DESC
+        ");
+    } else {
+        $stmt = $pdo->prepare("
+            SELECT 
+                fp.id,
+                fp.title,
+                fp.category,
+                fp.views,
+                fp.likes_count,
+                fp.comments_count,
+                fp.created_at,
+                u.username as author
+            FROM forum_posts fp
+            LEFT JOIN users u ON fp.user_id = u.id
+            WHERE fp.category = ?
+            ORDER BY fp.created_at DESC
+        ");
+        $stmt->execute([$category_filter]);
+    }
+    $posts = $stmt->fetchAll();
+
+    $stmt = $pdo->query("SELECT DISTINCT category FROM forum_posts WHERE category IS NOT NULL ORDER BY category");
+    $categories = $stmt->fetchAll(PDO::FETCH_COLUMN);
+}
 
 require_once __DIR__ . '/header.php';
 ?>
@@ -77,6 +89,25 @@ require_once __DIR__ . '/header.php';
         </div>
     </div>
 
+    <?php if ($search): ?>
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5>Výsledky hledání uživatelů pro "<?= escape($search) ?>"</h5>
+                <?php if (empty($users)): ?>
+                    <p class="text-muted">Žádní uživatelé nenalezeni.</p>
+                <?php else: ?>
+                    <div class="list-group">
+                        <?php foreach ($users as $u): ?>
+                            <a href="profile.php?id=<?= $u['id'] ?>" class="list-group-item list-group-item-action">
+                                <strong><?= escape($u['username']) ?></strong>
+                                <div class="small text-muted"><?= escape(trim(($u['first_name'] . ' ' . $u['last_name']))) ?></div>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php else: ?>
     <?php if (empty($posts)): ?>
         <div class="card shadow-sm border-0">
             <div class="card-body text-center py-5">
@@ -92,7 +123,7 @@ require_once __DIR__ . '/header.php';
             <?php foreach ($posts as $post): ?>
                 <div class="col">
                     <a href="forum_post.php?id=<?= $post['id'] ?>" class="text-decoration-none text-reset">
-                        <div class="card shadow-sm border-0 h-100 transition-shadow" style="transition: box-shadow 0.3s; cursor: pointer;">
+                        <div class="card shadow-sm border-0 h-100">
                             <div class="card-body">
                                 <?php if ($post['category']): ?>
                                     <span class="badge bg-primary mb-2"><?= escape($post['category']) ?></span>
@@ -103,9 +134,9 @@ require_once __DIR__ . '/header.php';
                                     <?= date('d.m.Y H:i', strtotime($post['created_at'])) ?>
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center text-muted small">
-                                    <span>👁 <?= $post['views'] ?></span>
-                                    <span>💬 <?= $post['comments_count'] ?></span>
-                                    <span>❤️ <?= $post['likes_count'] ?></span>
+                                    <span>Zobrazení <?= $post['views'] ?></span>
+                                    <span>Komentáře <?= $post['comments_count'] ?></span>
+                                    <span>Lajky <?= $post['likes_count'] ?></span>
                                 </div>
                             </div>
                         </div>
@@ -113,6 +144,7 @@ require_once __DIR__ . '/header.php';
                 </div>
             <?php endforeach; ?>
         </div>
+    <?php endif; ?>
     <?php endif; ?>
 </div>
 

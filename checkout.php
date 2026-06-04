@@ -97,6 +97,10 @@ require_once __DIR__ . '/header.php';
                         </div>
                         
                         <div class="d-flex gap-2 mt-4">
+                            <div class="form-check align-self-center me-2">
+                                <input class="form-check-input" type="checkbox" value="1" id="is_public" name="is_public">
+                                <label class="form-check-label small-muted" for="is_public">Zobrazit mou objednávku na profilu</label>
+                            </div>
                             <button type="submit" class="btn btn-primary btn-lg">Odeslat objednávku</button>
                             <a href="cart.php" class="btn btn-outline-secondary btn-lg">Zpět do košíku</a>
                         </div>
