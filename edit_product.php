@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/../database_connect.php';
-require_once __DIR__ . '/../functions.php';
+require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/functions.php';
 
 require_login();
 if (!is_admin()) {
-    header('Location: ../mainpage.php');
+    header('Location: ./mainpage.php');
     exit;
 }
 
@@ -75,10 +75,10 @@ $stmt = $pdo->query("SELECT * FROM categories ORDER BY name");
 $categories = $stmt->fetchAll();
 
 $page_title = ($product_id ? 'Upravit Produkt' : 'Nový Produkt') . ' — Admin Panel';
-$css_path = '../style.css';
+$css_path = './style.css';
 $base_url = '../';
 
-require_once __DIR__ . '/../header.php';
+require_once __DIR__ . '/header.php';
 ?>
     <div class="container py-5" style="max-width:640px;">
         <div class="card shadow-sm border-0">
@@ -103,12 +103,12 @@ require_once __DIR__ . '/../header.php';
 
                     <div class="mb-3">
                         <label class="form-label">Obrázek produktu</label>
-                        <?php if ($product && (!empty($product['image_blob']) || (!empty($product['image_path']) && file_exists(__DIR__ . '/../' . $product['image_path'])))): ?>
+                        <?php if ($product && (!empty($product['image_blob']) || (!empty($product['image_path']) && file_exists(__DIR__ . '/' . $product['image_path'])))): ?>
                             <div class="mb-2">
                                 <?php if (!empty($product['image_blob'])): ?>
-                                    <img src="../image.php?id=<?= $product['id'] ?>" alt="<?= escape($product['name']) ?>" style="max-height: 150px; max-width: 200px;">
+                                    <img src="./image.php?id=<?= $product['id'] ?>" alt="<?= escape($product['name']) ?>" style="max-height: 150px; max-width: 200px;">
                                 <?php else: ?>
-                                    <img src="../<?= escape($product['image_path']) ?>" alt="<?= escape($product['name']) ?>" style="max-height: 150px; max-width: 200px;">
+                                    <img src="./<?= escape($product['image_path']) ?>" alt="<?= escape($product['name']) ?>" style="max-height: 150px; max-width: 200px;">
                                 <?php endif; ?>
                             </div>
                         <?php endif; ?>
@@ -150,4 +150,4 @@ require_once __DIR__ . '/../header.php';
         </div>
     </div>
 
-<?php require_once __DIR__ . '/../footer.php'; ?>
+<?php require_once __DIR__ . '/footer.php'; ?>

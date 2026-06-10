@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/../database_connect.php';
-require_once __DIR__ . '/../functions.php';
+require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/functions.php';
 
 require_login();
 if (!is_admin()) {
-    header('Location: ../mainpage.php');
+    header('Location: ./mainpage.php');
     exit;
 }
 
@@ -48,10 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $page_title = 'Upravit Uživatele — Admin Panel';
-$css_path = '../style.css';
+$css_path = './style.css';
 $base_url = '../';
 
-require_once __DIR__ . '/../header.php';
+require_once __DIR__ . '/header.php';
 ?>
     <div class="container py-5" style="max-width:640px;">
         <div class="card shadow-sm border-0">
@@ -104,4 +104,4 @@ require_once __DIR__ . '/../header.php';
         </div>
     </div>
 
-<?php require_once __DIR__ . '/../footer.php'; ?>
+<?php require_once __DIR__ . '/footer.php'; ?>

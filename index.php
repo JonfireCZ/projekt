@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/database_connect.php';
+require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/functions.php';
 
 $page_title = 'LockerRoom - E-shop';

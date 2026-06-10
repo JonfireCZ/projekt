@@ -1,15 +1,15 @@
 <?php
-require_once __DIR__ . '/../database_connect.php';
-require_once __DIR__ . '/../functions.php';
+require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/functions.php';
 
 // Kontrola přihlášení a oprávnění
 if (!is_logged_in() || !is_admin()) {
-    header('Location: ../login.php?message=' . urlencode('Nemáte oprávnění k přístupu'));
+    header('Location: ./login.php?message=' . urlencode('Nemáte oprávnění k přístupu'));
     exit;
 }
 
 $page_title = 'Správa objednávek';
-$css_path = '../style.css';
+$css_path = './style.css';
 $base_url = '../';
 
 // Filtr podle stavu
@@ -42,7 +42,7 @@ $stmt = $pdo->query("SELECT
     FROM orders");
 $stats = $stmt->fetch();
 
-require_once __DIR__ . '/../header.php';
+require_once __DIR__ . '/header.php';
 
 // Funkce pro překlad stavů
 function translate_status($status) {
@@ -188,4 +188,4 @@ function status_badge_class($status) {
     </div>
 </div>
 
-<?php require_once __DIR__ . '/../footer.php'; ?>
+<?php require_once __DIR__ . '/footer.php'; ?>

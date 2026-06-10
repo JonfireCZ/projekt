@@ -1,9 +1,9 @@
 <?php
-require_once __DIR__ . '/../database_connect.php';
-require_once __DIR__ . '/../functions.php';
+require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/functions.php';
 
 if (!is_logged_in() || !is_admin()) {
-    header('Location: ../login.php?message=' . urlencode('Nemáte oprávnění k přístupu'));
+    header('Location: ./login.php?message=' . urlencode('Nemáte oprávnění k přístupu'));
     exit;
 }
 
@@ -100,10 +100,10 @@ $stmt->execute([$order_id]);
 $items = $stmt->fetchAll();
 
 $page_title = 'Úprava objednávky #' . $order_id;
-$css_path = '../style.css';
+$css_path = './style.css';
 $base_url = '../';
 
-require_once __DIR__ . '/../header.php';
+require_once __DIR__ . '/header.php';
 
 function translate_status($status) {
     $translations = [
@@ -254,4 +254,4 @@ function translate_status($status) {
     </div>
 </div>
 
-<?php require_once __DIR__ . '/../footer.php'; ?>
+<?php require_once __DIR__ . '/footer.php'; ?>
