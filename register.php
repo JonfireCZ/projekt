@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/database_connect.php';
+require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/functions.php';
 
 $field_errors = [];
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container d-flex justify-content-between align-items-center">
         <h1 class="h3 mb-0 text-white">LockerRoom</h1>
         <nav class="d-flex gap-2">
-            <a href="mainpage.php" class="text-white text-decoration-none">Domů</a>
+            <a href="index.php" class="text-white text-decoration-none">Domů</a>
         </nav>
     </div>
 </header>

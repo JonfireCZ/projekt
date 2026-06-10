@@ -4,7 +4,7 @@ require_once __DIR__ . '/functions.php';
 
 require_login();
 if (!is_admin()) {
-    header('Location: ./mainpage.php');
+    header('Location: ./index.php');
     exit;
 }
 

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/database_connect.php';
+require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/functions.php';
 
 $product_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -9,7 +9,7 @@ $stmt->execute([$product_id]);
 $product = $stmt->fetch();
 
 if (!$product) {
-    header('Location: mainpage.php');
+    header('Location: index.php');
     exit;
 }
 
@@ -130,7 +130,7 @@ require_once __DIR__ . '/header.php';
                         <?php endif; ?>
                         <h5 class="card-title">Kategorie</h5>
                         <div class="d-flex flex-column gap-2">
-                            <a href="mainpage.php" class="btn btn-outline-secondary btn-sm">Všechny produkty</a>
+                            <a href="index.php" class="btn btn-outline-secondary btn-sm">Všechny produkty</a>
                             <?php foreach ($categories as $cat): ?>
                                 <a href="category.php?id=<?= $cat['id'] ?>" class="btn <?= ($cat['id'] == $product['category_id']) ? 'btn-primary' : 'btn-outline-primary' ?> btn-sm">
                                     <?= escape($cat['name']) ?>
@@ -142,7 +142,7 @@ require_once __DIR__ . '/header.php';
             </aside>
 
             <section class="col-md-9">
-                <a href="mainpage.php" class="btn btn-outline-secondary btn-sm mb-3">Zpět</a>
+                <a href="index.php" class="btn btn-outline-secondary btn-sm mb-3">Zpět</a>
 
                 <div class="card shadow-sm border-0">
                     <div class="card-body">

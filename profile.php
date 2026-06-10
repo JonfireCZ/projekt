@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/database_connect.php';
+require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/functions.php';
 
 require_login();
@@ -338,10 +338,6 @@ require_once __DIR__ . '/header.php';
                         <a href="profile.php?tab=settings" class="btn btn-outline-primary btn-sm">Upravit profil</a>
                     </div>
                     <div class="mt-2 text-muted small"><?= escape($user['email'] ?? '') ?></div>
-                <?php else: ?>
-                    <div class="mt-3">
-                        <a href="message.php?to=<?= $view_user_id ?>" class="btn btn-outline-primary btn-sm">Poslat zprávu</a>
-                    </div>
                 <?php endif; ?>
             </div>
         </aside>

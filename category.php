@@ -10,7 +10,7 @@ if ($selected_category != $category_id) {
     if ($selected_category == 0) {
         $query = $_GET;
         unset($query['id'], $query['category']);
-        header('Location: mainpage.php?' . http_build_query($query));
+        header('Location: index.php?' . http_build_query($query));
         exit;
     } else {
         $query = $_GET;
@@ -35,7 +35,7 @@ $stmt->execute([$category_id]);
 $category = $stmt->fetch();
 
 if (!$category) {
-    header('Location: mainpage.php');
+    header('Location: index.php');
     exit;
 }
 
@@ -125,7 +125,7 @@ require_once __DIR__ . '/header.php';
                         <div class="card-body text-center py-5">
                             <h4 class="text-muted">nic zde není :(</h4>
                             <p class="text-muted mb-3">V této kategorii zatím nejsou žádné produkty.</p>
-                            <a href="mainpage.php" class="btn btn-primary">Zpět na hlavní stránku</a>
+                            <a href="index.php" class="btn btn-primary">Zpět na hlavní stránku</a>
                         </div>
                     </div>
                 <?php else: ?>

@@ -82,7 +82,7 @@ if (is_logged_in()) {
         <div class="card">
             <div class="card-body text-center py-5">
                 <p class="text-muted">V košíku zatím nic není.</p>
-                <a href="mainpage.php" class="btn btn-primary">Pokračovat v nákupu</a>
+                <a href="index.php" class="btn btn-primary">Pokračovat v nákupu</a>
             </div>
         </div>
     <?php else: ?>
@@ -139,7 +139,7 @@ if (is_logged_in()) {
                 <h4>Celkem: <?= number_format($total, 2, ',', ' ') ?> Kč</h4>
             </div>
             <div>
-                <a href="mainpage.php" class="btn btn-outline-secondary">Pokračovat v nákupu</a>
+                <a href="index.php" class="btn btn-outline-secondary">Pokračovat v nákupu</a>
                 <?php if (is_logged_in()): ?>
                     <a href="checkout.php" class="btn btn-primary">Dokončit objednávku</a>
                 <?php else: ?>

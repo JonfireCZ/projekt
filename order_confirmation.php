@@ -54,7 +54,7 @@ require_once __DIR__ . '/header.php';
                     
                     <div class="mt-4 d-flex gap-2 justify-content-center">
                         <a href="my_orders.php" class="btn btn-primary">Zobrazit moje objednávky</a>
-                        <a href="mainpage.php" class="btn btn-outline-primary">Pokračovat v nákupu</a>
+                        <a href="index.php" class="btn btn-outline-primary">Pokračovat v nákupu</a>
                     </div>
                 </div>
             </div>

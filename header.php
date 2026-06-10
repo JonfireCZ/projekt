@@ -19,7 +19,7 @@
             </div>
             <?php if (isset($show_search) && $show_search): ?>
                 <?php $current_script = basename($_SERVER['PHP_SELF']);
-                      $search_action = ($current_script === 'forum.php') ? 'forum.php' : 'mainpage.php';
+                      $search_action = ($current_script === 'forum.php') ? 'forum.php' : 'index.php';
                       $search_placeholder = ($current_script === 'forum.php') ? 'Hledat uživatele...' : 'Hledat produkty...';
                 ?>
                 <div class="header-search-wrap ms-3">
@@ -51,7 +51,7 @@
 
             <div class="collapse d-md-block" id="siteNav">
                 <nav class="d-flex gap-3 align-items-center flex-column flex-md-row">
-                    <a href="<?= $base_url ?? '' ?>mainpage.php" class="text-white text-decoration-none">E-shop</a>
+                    <a href="<?= $base_url ?? '' ?>index.php" class="text-white text-decoration-none">E-shop</a>
                     <a href="<?= $base_url ?? '' ?>forum.php" class="text-white text-decoration-none">Fórum</a>
                     <?php if (is_admin()): ?>
                         <a href="<?= $base_url ?? '' ?>dashboard.php" class="text-white text-decoration-none">Správa</a>

@@ -7,39 +7,47 @@ if (!is_logged_in()) {
     exit;
 }
 
+if (!function_exists('translate_status')) {
+    function translate_status($status) {
+        $translations = [
+            'pending' => 'Čeká na zpracování',
+            'processing' => 'Zpracovává se',
+            'shipped' => 'Odesláno',
+            'delivered' => 'Doručeno',
+            'cancelled' => 'Zrušeno',
+        ];
+        return $translations[$status] ?? $status;
+    }
+}
+
+if (!function_exists('status_badge_class')) {
+    function status_badge_class($status) {
+        $classes = [
+            'pending' => 'bg-warning text-dark',
+            'processing' => 'bg-info text-white',
+            'shipped' => 'bg-primary text-white',
+            'delivered' => 'bg-success text-white',
+            'cancelled' => 'bg-danger text-white',
+        ];
+        return $classes[$status] ?? 'bg-secondary';
+    }
+}
+
+if (!function_exists('escape')) {
+    function escape($string) {
+        return htmlspecialchars($string ?? '', ENT_QUOTES, 'UTF-8');
+    }
+}
+
 $page_title = 'Moje objednávky';
 $css_path = 'style.css';
 $base_url = '';
 
-$stmt = $pdo->prepare("SELECT id, total_price, status, created_at, COALESCE(is_public,0) AS is_public FROM orders WHERE user_id = ? ORDER BY created_at DESC");
+$stmt = $pdo->prepare("SELECT id, user_id, total_price, status, shipping_address, created_at, COALESCE(is_public,0) AS is_public FROM orders WHERE user_id = ? ORDER BY created_at DESC");
 $stmt->execute([$_SESSION['user_id']]);
 $orders = $stmt->fetchAll();
 
 require_once __DIR__ . '/header.php';
-
-// Funkce pro překlad stavů
-function translate_status($status) {
-    $translations = [
-        'pending' => 'Čeká na zpracování',
-        'processing' => 'Zpracovává se',
-        'shipped' => 'Odesláno',
-        'delivered' => 'Doručeno',
-        'cancelled' => 'Zrušeno',
-    ];
-    return $translations[$status] ?? $status;
-}
-
-// Funkce pro barvu stavů
-function status_badge_class($status) {
-    $classes = [
-        'pending' => 'bg-warning text-dark',
-        'processing' => 'bg-info text-white',
-        'shipped' => 'bg-primary text-white',
-        'delivered' => 'bg-success text-white',
-        'cancelled' => 'bg-danger text-white',
-    ];
-    return $classes[$status] ?? 'bg-secondary';
-}
 ?>
 
 <div class="container my-5">
@@ -49,19 +57,16 @@ function status_badge_class($status) {
         <div class="card mt-4">
             <div class="card-body text-center py-5">
                 <p class="text-muted">Zatím jste nevytvořili žádnou objednávku.</p>
-                <a href="mainpage.php" class="btn btn-primary">Začít nakupovat</a>
+                <a href="index.php" class="btn btn-primary">Začít nakupovat</a>
             </div>
         </div>
     <?php else: ?>
         <div class="mt-4">
             <?php foreach ($orders as $order): ?>
                 <?php
-                    // Načtení položek objednávky
                     $stmt = $pdo->prepare("SELECT product_name, quantity, price FROM order_items WHERE order_id = ?");
                     $stmt->execute([$order['id']]);
                     $items = $stmt->fetchAll();
-                    
-
                 ?>
                 
                 <div class="card mb-3">

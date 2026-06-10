@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/database_connect.php';
+require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/functions.php';
 
 if (!function_exists('translate_status')) {
@@ -28,6 +28,12 @@ if (!function_exists('status_badge_class')) {
     }
 }
 
+if (!function_exists('escape')) {
+    function escape($string) {
+        return htmlspecialchars($string ?? '', ENT_QUOTES, 'UTF-8');
+    }
+}
+
 if (!is_logged_in()) {
     header('Location: login.php');
     exit;
@@ -39,25 +45,22 @@ if (!$order_id) {
     exit;
 }
 
-// fetch order
-$stmt = $pdo->prepare('SELECT o.*, u.username FROM orders o LEFT JOIN users u ON o.user_id = u.id WHERE o.id = ?');
+$stmt = $pdo->prepare('SELECT o.*, o.id AS order_real_id, u.username FROM orders o LEFT JOIN users u ON o.user_id = u.id WHERE o.id = ?');
 $stmt->execute([$order_id]);
 $order = $stmt->fetch();
+
 if (!$order) {
     header('Location: my_orders.php');
     exit;
 }
 
-// permission: owner or public
 $current_user = $_SESSION['user_id'];
 if ($order['user_id'] != $current_user && empty($order['is_public'])) {
-    // not allowed
     header('HTTP/1.1 403 Forbidden');
     echo 'Nemáte oprávnění zobrazit tuto objednávku.';
     exit;
 }
 
-// items
 $stmt = $pdo->prepare('SELECT oi.*, p.image_path, p.image_mime FROM order_items oi LEFT JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?');
 $stmt->execute([$order_id]);
 $items = $stmt->fetchAll();
@@ -67,6 +70,7 @@ $css_path = 'style.css';
 $base_url = '';
 require_once __DIR__ . '/header.php';
 ?>
+
 <div class="container my-4">
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -120,4 +124,3 @@ require_once __DIR__ . '/header.php';
 </div>
 
 <?php require_once __DIR__ . '/footer.php'; ?>
- 

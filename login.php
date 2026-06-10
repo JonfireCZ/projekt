@@ -3,7 +3,7 @@ require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/functions.php';
 
 if (isset($_SESSION['user_id'])) {
-    header('Location: mainpage.php');
+    header('Location: index.php');
     exit;
 }
 
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
-            header('Location: mainpage.php');
+            header('Location: index.php');
             exit;
         }
     }
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container d-flex justify-content-between align-items-center">
         <h1 class="h3 mb-0 text-white">LockerRoom</h1>
         <nav class="d-flex gap-2">
-            <a href="mainpage.php" class="text-white text-decoration-none">Domů</a>
+            <a href="index.php" class="text-white text-decoration-none">Domů</a>
         </nav>
     </div>
 </header>

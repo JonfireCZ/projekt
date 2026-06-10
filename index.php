@@ -64,7 +64,7 @@ require_once __DIR__ . '/header.php';
     <div class="container my-4">
         <div class="d-flex d-md-none justify-content-between mb-3">
             <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">Filtry</button>
-            <a href="mainpage.php" class="btn btn-outline-secondary">Vymazat filtry</a>
+            <a href="index.php" class="btn btn-outline-secondary">Vymazat filtry</a>
         </div>
         <div class="row">
             <aside class="col-md-3 mb-3">
@@ -72,7 +72,7 @@ require_once __DIR__ . '/header.php';
                 <div class="card shadow-sm border-0">
                     <div class="card-body">
                         <h6 class="mt-3">Filtry</h6>
-                        <form method="get" action="mainpage.php">
+                        <form method="get" action="index.php">
                             <div class="mb-3">
                                 <label for="category" class="form-label">Kategorie</label>
                                 <select name="category" id="category" class="form-select form-select-sm">
@@ -97,7 +97,7 @@ require_once __DIR__ . '/header.php';
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary btn-sm w-100 mb-2">Filtrovat</button>
-                            <a href="mainpage.php" class="btn btn-outline-secondary btn-sm w-100">Vymazat filtry</a>
+                            <a href="index.php" class="btn btn-outline-secondary btn-sm w-100">Vymazat filtry</a>
                             <input type="hidden" name="search" value="<?= escape($search) ?>">
                         </form>
                     </div>
@@ -126,7 +126,7 @@ require_once __DIR__ . '/header.php';
                                     </svg>
                                     <h4 class="fw-bold mb-2" style="color: #0f3460;">Nenalezeny žádné produkty</h4>
                                     <p class="text-muted">Zkuste použít jiná klíčová slova nebo procházejte podle kategorií.</p>
-                                    <a href="mainpage.php" class="btn btn-primary mt-3">Zobrazit všechny produkty</a>
+                                    <a href="index.php" class="btn btn-primary mt-3">Zobrazit všechny produkty</a>
                                 </div>
                             </div>
                         </div>
@@ -160,7 +160,4 @@ require_once __DIR__ . '/header.php';
         </div>
     </div>
 
-        <script>
-        </script>
-
-        <?php require_once __DIR__ . '/footer.php'; ?>
+<?php require_once __DIR__ . '/footer.php'; ?>
