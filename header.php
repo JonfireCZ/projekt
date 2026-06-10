@@ -13,10 +13,10 @@
 <header class="bg-dark text-white py-3 sticky-top">
     <div class="container d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
-            <a href="<?= $base_url ?? '' ?>mainpage.php" class="d-flex align-items-center text-decoration-none text-white me-3">
+            <div class="d-flex align-items-center text-white me-3">
                 <div style="width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-600));display:flex;align-items:center;justify-content:center;font-weight:700;margin-right:10px;box-shadow:0 6px 20px rgba(15,52,96,0.18)">LR</div>
                 <h1 class="h3 mb-0">LockerRoom</h1>
-            </a>
+            </div>
             <?php if (isset($show_search) && $show_search): ?>
                 <?php $current_script = basename($_SERVER['PHP_SELF']);
                       $search_action = ($current_script === 'forum.php') ? 'forum.php' : 'mainpage.php';

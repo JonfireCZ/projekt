@@ -61,11 +61,7 @@ function status_badge_class($status) {
                     $stmt->execute([$order['id']]);
                     $items = $stmt->fetchAll();
                     
-                    // Načtení dodací adresy
-                    $stmt = $pdo->prepare("SELECT shipping_address FROM orders WHERE id = ?");
-                    $stmt->execute([$order['id']]);
-                    $order_details = $stmt->fetch();
-                    $address = json_decode($order_details['shipping_address'], true);
+
                 ?>
                 
                 <div class="card mb-3">
@@ -113,10 +109,7 @@ function status_badge_class($status) {
                                 <div class="col-md-4">
                                     <h6>Dodací adresa:</h6>
                                     <address>
-                                        <?= escape($address['first_name'] ?? '') ?> <?= escape($address['last_name'] ?? '') ?><br>
-                                        <?= escape($address['street'] ?? '') ?><br>
-                                        <?= escape($address['zip'] ?? '') ?> <?= escape($address['city'] ?? '') ?><br>
-                                        <small class="text-muted">Tel: <?= escape($address['phone'] ?? '') ?></small>
+                                        <?= escape($order['shipping_address'] ?? '-') ?>
                                     </address>
                                     <p class="mb-0"><strong>Stav:</strong> <span class="badge <?= status_badge_class($order['status']) ?>"><?= translate_status($order['status']) ?></span></p>
                                     <p class="mb-0"><strong>Cena celkem:</strong> <?= number_format($order['total_price'], 2, ',', ' ') ?> Kč</p>

@@ -99,8 +99,6 @@ $stmt = $pdo->prepare("SELECT * FROM order_items WHERE order_id = ?");
 $stmt->execute([$order_id]);
 $items = $stmt->fetchAll();
 
-$address = json_decode($order['shipping_address'], true);
-
 $page_title = 'Úprava objednávky #' . $order_id;
 $css_path = '../style.css';
 $base_url = '../';
@@ -230,12 +228,7 @@ function translate_status($status) {
                 </div>
                 <div class="card-body">
                     <address>
-                        <strong><?= escape($address['first_name'] ?? '') ?> <?= escape($address['last_name'] ?? '') ?></strong><br>
-                        <?= escape($address['street'] ?? '') ?><br>
-                        <?= escape($address['zip'] ?? '') ?> <?= escape($address['city'] ?? '') ?><br>
-                        <br>
-                        <strong>Tel:</strong> <?= escape($address['phone'] ?? '') ?><br>
-                        <strong>Email:</strong> <?= escape($address['email'] ?? '') ?>
+                        <?= escape($order['shipping_address'] ?? '-') ?>
                     </address>
                 </div>
             </div>

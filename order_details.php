@@ -108,12 +108,8 @@ require_once __DIR__ . '/header.php';
                 </div>
                 <div class="col-md-4">
                     <h5>Dodací adresa</h5>
-                    <?php $addr = json_decode($order['shipping_address'] ?? '{}', true); ?>
                     <address>
-                        <?= escape($addr['first_name'] ?? '') ?> <?= escape($addr['last_name'] ?? '') ?><br>
-                        <?= escape($addr['street'] ?? '') ?><br>
-                        <?= escape($addr['zip'] ?? '') ?> <?= escape($addr['city'] ?? '') ?><br>
-                        <small class="text-muted">Tel: <?= escape($addr['phone'] ?? '') ?></small>
+                        <?= escape($order['shipping_address'] ?? '-') ?>
                     </address>
                     <h6>Stav objednávky</h6>
                     <p><?= translate_status($order['status']) ?></p>

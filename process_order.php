@@ -34,15 +34,7 @@ if (empty($first_name) || empty($last_name) || empty($email) || empty($phone) ||
 }
 
 // Sestavení dodací adresy
-$shipping_address = json_encode([
-    'first_name' => $first_name,
-    'last_name' => $last_name,
-    'email' => $email,
-    'phone' => $phone,
-    'street' => $street,
-    'city' => $city,
-    'zip' => $zip,
-], JSON_UNESCAPED_UNICODE);
+$shipping_address = $street;
 
 try {
     $pdo->beginTransaction();

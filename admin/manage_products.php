@@ -9,7 +9,7 @@ if (!is_admin()) {
 }
 
 $delete_id = isset($_GET['delete']) ? (int)$_GET['delete'] : 0;
-if ($delete_id && $_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($delete_id) {
     $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
     $stmt->execute([$delete_id]);
     header('Location: manage_products.php?deleted=1');

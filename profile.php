@@ -151,7 +151,6 @@ require_once __DIR__ . '/header.php';
                                             $stmt = $pdo->prepare("SELECT product_name, quantity, price FROM order_items WHERE order_id = ?");
                                             $stmt->execute([$order['id']]);
                                             $order_items = $stmt->fetchAll();
-                                            $address = json_decode($order['shipping_address'] ?? '{}', true);
                                             $collapseId = 'orderDetails-' . $order['id'];
                                         ?>
                                         <div class="card mb-3">
@@ -184,10 +183,7 @@ require_once __DIR__ . '/header.php';
                                                         <div class="col-md-4">
                                                             <h6>Dodací adresa:</h6>
                                                             <address>
-                                                                <?= escape($address['first_name'] ?? '') ?> <?= escape($address['last_name'] ?? '') ?><br>
-                                                                <?= escape($address['street'] ?? '') ?><br>
-                                                                <?= escape($address['zip'] ?? '') ?> <?= escape($address['city'] ?? '') ?><br>
-                                                                <small class="text-muted">Tel: <?= escape($address['phone'] ?? '') ?></small>
+                                                                <?= escape($order['shipping_address'] ?? '-') ?>
                                                             </address>
                                                         </div>
                                                     </div>
