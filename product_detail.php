@@ -183,7 +183,7 @@ require_once __DIR__ . '/header.php';
 
                         <?php if (is_admin()): ?>
                             <div class="mt-3">
-                                <a href="admin/edit_product.php?id=<?= $product['id'] ?>" class="btn btn-warning btn-sm">Upravit</a>
+                                <a href="edit_product.php?id=<?= $product['id'] ?>" class="btn btn-warning btn-sm">Upravit</a>
                             </div>
                         <?php endif; ?>
                     </div>

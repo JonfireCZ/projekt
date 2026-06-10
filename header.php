@@ -54,7 +54,7 @@
                     <a href="<?= $base_url ?? '' ?>mainpage.php" class="text-white text-decoration-none">E-shop</a>
                     <a href="<?= $base_url ?? '' ?>forum.php" class="text-white text-decoration-none">Fórum</a>
                     <?php if (is_admin()): ?>
-                        <a href="<?= $base_url ?? '' ?>admin/dashboard.php" class="text-white text-decoration-none">Správa</a>
+                        <a href="<?= $base_url ?? '' ?>dashboard.php" class="text-white text-decoration-none">Správa</a>
                     <?php endif; ?>
                     <?php if (is_logged_in()): ?>
                         <a href="<?= $base_url ?? '' ?>profile.php" class="text-white text-decoration-none">Můj profil</a>
